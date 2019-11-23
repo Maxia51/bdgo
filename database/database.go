@@ -17,7 +17,7 @@ func New(user string, password string, ip string, port string, name string) IDat
 	// Open up our database connection.
 	// I've set up a database on my local machine using phpmyadmin.
 	// The database is called testDb
-	db, err := sql.Open("mysql", user+":"+password+"@tcp("+ip+":"+port+")/"+name)
+	db, err := sql.Open("mysql", user+":"+password+"@tcp("+ip+":"+port+")/"+name+"?parseTime=true")
 
 	// if there is an error opening the connection, handle it
 	if err != nil {
