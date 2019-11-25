@@ -2,6 +2,7 @@ package model
 
 import "time"
 
+// Staff DTO
 type Staff struct {
 	Id         uint
 	Email      string
@@ -11,4 +12,5 @@ type Staff struct {
 	Updated_at time.Time
 }
 
+// Staffs DTO
 type Staffs []Staffs

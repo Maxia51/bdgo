@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// User DTO
 type User struct {
 	Id         uint
 	Firstname  string
@@ -14,4 +15,5 @@ type User struct {
 	Updated_at time.Time
 }
 
+// Users DTO
 type Users []User

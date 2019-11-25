@@ -9,23 +9,25 @@ type router struct {
 	security security.ISecurity
 }
 
+// New instanciate a user router
+// It return a router pointer
 func New(s security.ISecurity) *router {
 	return &router{
 		security: s,
 	}
 }
 
+// Register add all the routes of the router
 func (r *router) Register(gin *gin.RouterGroup) {
 	gin.GET("/user", r.userHandler)
 }
 
+// userHandler handle the user request 
 func (r *router) userHandler(c *gin.Context) {
 
-	session, _ := r.security.GetSession()
+	// TODO implement correct response
 
 	c.JSON(200, gin.H{
-		"isLogged": r.security.IsLogged(),
-		"token": session,
 		"message": "pong",
 	})
 }

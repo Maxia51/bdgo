@@ -2,7 +2,6 @@ package login
 
 import (
 	"net/http"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/maxia51/bdgo/repository"
@@ -19,6 +18,8 @@ type login struct {
 	Password string `form:"password" json:"password" xml:"password" binding:"required"`
 }
 
+// New instanciate a login router
+// It return a login pointer
 func New(staff repository.IStaffRepo, security security.ISecurity) *router {
 	return &router{
 		staff:    staff,
@@ -26,10 +27,12 @@ func New(staff repository.IStaffRepo, security security.ISecurity) *router {
 	}
 }
 
+// Register add all the routes of the router
 func (r *router) Register(gin *gin.RouterGroup) {
 	gin.POST("/login", r.loginHandler)
 }
 
+// loginHandler handle the login path and create the jwt
 func (r *router) loginHandler(c *gin.Context) {
 
 	var json login
@@ -45,8 +48,7 @@ func (r *router) loginHandler(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(r.security.IsLogged())
-	fmt.Println(r.security.GetSession())
+	// TODO create the jwt
 
 	c.JSON(http.StatusOK, gin.H{"status": "you are logged in"})
 

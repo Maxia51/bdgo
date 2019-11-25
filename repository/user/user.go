@@ -12,12 +12,16 @@ type service struct {
 	db database.IDatabase
 }
 
+// New Instanciate a user repository
+// It return a user pointer
 func New(db database.IDatabase) *service {
 	return &service{
 		db: db,
 	}
 }
 
+// GetAll get all the users 
+// It return models.Users and error
 func (s *service) GetAll() (model.Users, error) {
 
 	var users model.Users
@@ -32,6 +36,7 @@ func (s *service) GetAll() (model.Users, error) {
 
 		var user model.User
 
+		// populate user struct
 		err = results.Scan(&user.Id, &user.Firstname, &user.Lastname, &user.Money, &user.Level.Id, &user.Created_at, &user.Updated_at, &user.Level.Level)
 
 		users = append(users, user)

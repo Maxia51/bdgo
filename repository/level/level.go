@@ -12,12 +12,16 @@ type service struct {
 	db database.IDatabase
 }
 
+// New instanciate a level repository
+// It return a level pointer
 func New(db database.IDatabase) *service {
 	return &service{
 		db: db,
 	}
 }
 
+// GetAll get all the levels
+// It return model.Levels and error
 func (s *service) GetAll() (model.Levels, error) {
 
 	var levels model.Levels
