@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/maxia51/bdgo/database"
-	levelRepository "github.com/maxia51/bdgo/repository/level"
-	userRepository "github.com/maxia51/bdgo/repository/user"
+	staffRepository "github.com/maxia51/bdgo/repository/staff"
+	"github.com/maxia51/bdgo/routes/user"
+	"github.com/maxia51/bdgo/routes/login"
+	"github.com/maxia51/bdgo/security"
 )
 
 func main() {
@@ -20,10 +23,27 @@ func main() {
 
 	db := database.New()
 
-	levelRepository := levelRepository.New(db)
-	userRepository := userRepository.New(db)
+	// levelRepository := levelRepository.New(db)
+	// userRepository := userRepository.New(db)
+	staffRepository := staffRepository.New(db)
 
-	fmt.Println(levelRepository.GetAll())
-	fmt.Println(userRepository.GetAll())
+	securityService := security.New(staffRepository)
+
 	fmt.Println("hello world")
+
+	router := gin.Default()
+
+	api := router.Group("/api")
+	{
+
+		loginRouter := login.New(staffRepository, securityService)
+		loginRouter.Register(api)
+	}
+	{
+		adminAuth := api.Group("/v1")
+		userRouter := user.New(securityService)
+		userRouter.Register(adminAuth)
+	}
+
+	router.Run(":3000")
 }

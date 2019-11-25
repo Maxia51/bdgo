@@ -1,6 +1,8 @@
 package database
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 type IDatabase interface {
 	GetDatabase() *sql.DB
