@@ -6,32 +6,20 @@ import "fmt"
 
 type service struct {
 	db repository.IStaffRepo
-	Session Session
 }
 
-type Session struct {
-	Token string
-	Role string
-}
-
+// New instanciate a security service
+// Security service implement ISecurity interface
+// It return a security pointer
 func New(db repository.IStaffRepo) *service {
 
 	return &service{
 		db: db,
-		Session: Session{
-			Token: "",
-			Role: "",
-		},
 	}
 }
 
-func (s *service) IsLogged() bool {
-	if len(s.Session.Token) > 0 {
-		return true
-	}
-	return false
-}
-
+// Auth check the posted credentail
+// It return a boolean value and error
 func (s *service) Auth(email string, password string) (bool, error) {
 
 	staff, err := s.db.GetStaffByEmail(email)
@@ -47,17 +35,5 @@ func (s *service) Auth(email string, password string) (bool, error) {
 		return false, fmt.Errorf("Incorrect Password")
 	}
 
-	s.Session.Token = "adding"
-	s.Session.Role = "admin"
-
 	return true, nil
-}
-
-
-func (s *service) GetSession() (Session, error) {
-	if len(s.Session.Token) < 0 || len(s.Session.Role) < 0 {
-		return s.Session, fmt.Errorf("Session not initialized")
-	}
-
-	return s.Session, nil
 }
