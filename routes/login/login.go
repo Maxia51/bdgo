@@ -36,20 +36,20 @@ func (r *router) Register(gin *gin.RouterGroup) {
 func (r *router) loginHandler(c *gin.Context) {
 
 	var json login
+
 	if err := c.ShouldBindJSON(&json); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	_, err := r.security.Auth(json.Email, json.Password)
+	token, err := r.security.Auth(json.Email, json.Password)
 
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
-	// TODO create the jwt
-
-	c.JSON(http.StatusOK, gin.H{"status": "you are logged in"})
+	c.Header("Authorization", "Baerer "+token)
+	c.JSON(http.StatusOK, gin.H{"token": token})
 
 }

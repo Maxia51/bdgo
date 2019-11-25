@@ -1,8 +1,13 @@
 package security
 
-import "github.com/maxia51/bdgo/repository"
+import (
+	"fmt"
+	"os"
+	"time"
 
-import "fmt"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/maxia51/bdgo/repository"
+)
 
 type service struct {
 	db repository.IStaffRepo
@@ -19,21 +24,43 @@ func New(db repository.IStaffRepo) *service {
 }
 
 // Auth check the posted credentail
-// It return a boolean value and error
-func (s *service) Auth(email string, password string) (bool, error) {
+// It return a jwt token and error
+func (s *service) Auth(email string, password string) (string, error) {
 
 	staff, err := s.db.GetStaffByEmail(email)
-
-	fmt.Println(staff)
-
+	
 	if err != nil {
-		return false, err
+		return "", err
 	}
 
 	// Check password
 	if staff.Password != password {
-		return false, fmt.Errorf("Incorrect Password")
+		return "", fmt.Errorf("Incorrect Password")
 	}
 
-	return true, nil
+	token, err := s.createJWT(staff.Id, staff.Role.Name)
+
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
+}
+
+func (s *service) createJWT(id uint, role string) (string, error) {
+	// Create a new token object, specifying signing method and the claims
+	// you would like it to contain.
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"id": id,
+		"role": role,
+		"nbf":  time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
+	})
+
+	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET_KEY")))
+
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
 }

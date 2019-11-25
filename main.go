@@ -20,6 +20,7 @@ func main() {
 	os.Setenv("MYSQL_ADDR", "127.0.0.1")
 	os.Setenv("MYSQL_PORT", "3306")
 	os.Setenv("MYSQL_DATABASE_NAME", "bde")
+	os.Setenv("JWT_SECRET_KEY", "bde")
 
 	db := database.New()
 
