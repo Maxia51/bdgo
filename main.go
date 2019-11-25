@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/maxia51/bdgo/database"
+	"github.com/maxia51/bdgo/middleware"
 	staffRepository "github.com/maxia51/bdgo/repository/staff"
 	"github.com/maxia51/bdgo/routes/user"
 	"github.com/maxia51/bdgo/routes/login"
@@ -42,8 +43,12 @@ func main() {
 	}
 	{
 		adminAuth := api.Group("/v1")
-		userRouter := user.New(securityService)
-		userRouter.Register(adminAuth)
+
+		adminAuth.Use(middleware.AuthRequired("ADMIN"))
+		{
+			userRouter := user.New(securityService)
+			userRouter.Register(adminAuth)
+		}
 	}
 
 	router.Run(":3000")
