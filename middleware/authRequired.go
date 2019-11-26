@@ -14,7 +14,7 @@ import (
 func AuthRequired(role ...interface{}) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		token := strings.Replace(c.GetHeader("Authorization"), "bearer ", "", -1)
+		token := strings.Replace(c.GetHeader("Authorization"), "Bearer ", "", -1)
 
 		claims, err := checkTokenValidity(token)
 

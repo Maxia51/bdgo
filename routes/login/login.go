@@ -49,7 +49,7 @@ func (r *router) loginHandler(c *gin.Context) {
 		return
 	}
 
-	c.Header("Authorization", "Baerer "+token)
+	c.Header("Authorization", "Bearer "+token)
 	c.JSON(http.StatusOK, gin.H{"token": token})
 
 }
