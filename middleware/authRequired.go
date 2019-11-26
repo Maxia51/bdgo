@@ -19,7 +19,7 @@ func AuthRequired(role ...interface{}) gin.HandlerFunc {
 		claims, err := checkTokenValidity(token)
 
 		if err != nil {
-			c.JSON(http.StatusOK, gin.H{"error": "token invalid"})
+			c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}

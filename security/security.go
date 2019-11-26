@@ -48,12 +48,16 @@ func (s *service) Auth(email string, password string) (string, error) {
 }
 
 func (s *service) createJWT(id uint, role string) (string, error) {
+
 	// Create a new token object, specifying signing method and the claims
 	// you would like it to contain.
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id": id,
 		"role": role,
-		"nbf":  time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
+		"exp": time.Now().UTC().Add(60*time.Minute).Unix(),
+		// Not before is useless in my case
+		// keep it in the code because i want to remember this feature (educational purpose)
+		//"nbf":  time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
 	})
 
 	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET_KEY")))
