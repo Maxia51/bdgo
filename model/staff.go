@@ -13,4 +13,4 @@ type Staff struct {
 }
 
 // Staffs DTO
-type Staffs []Staffs
+type Staffs []Staff
