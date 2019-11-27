@@ -13,3 +13,8 @@ type IStaffRepo interface {
 	InsertStaff(staff *model.Staff) (error)
 	UpdateStaff(staff *model.Staff) (error)
 }
+
+type IRoleRepo interface {
+	GetRoleByID(id uint) (model.Role, error)
+	GetRoleByName(name string) (model.Role, error)
+}

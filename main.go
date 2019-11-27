@@ -8,6 +8,7 @@ import (
 	"github.com/maxia51/bdgo/database"
 	"github.com/maxia51/bdgo/middleware"
 	staffRepository "github.com/maxia51/bdgo/repository/staff"
+	roleRepository "github.com/maxia51/bdgo/repository/role"
 	"github.com/maxia51/bdgo/routes/login"
 	"github.com/maxia51/bdgo/routes/staff"
 	"github.com/maxia51/bdgo/security"
@@ -27,7 +28,8 @@ func main() {
 
 	// levelRepository := levelRepository.New(db)
 	// userRepository := userRepository.New(db)
-	staffRepository := staffRepository.New(db)
+	roleRepository := roleRepository.New(db)
+	staffRepository := staffRepository.New(db, roleRepository)
 
 	securityService := security.New(staffRepository)
 
@@ -47,7 +49,7 @@ func main() {
 		{
 			adminRouter.Use(middleware.AuthRequired("ADMIN"))
 			{
-				staffRouter := staff.New(staffRepository)
+				staffRouter := staff.New(staffRepository, roleRepository)
 				staffRouter.Register(adminRouter)
 			}
 		}

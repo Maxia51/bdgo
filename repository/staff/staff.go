@@ -7,18 +7,21 @@ import (
 	"time"
 
 	"github.com/maxia51/bdgo/database"
+	"github.com/maxia51/bdgo/repository"
 	"github.com/maxia51/bdgo/model"
 )
 
 type service struct {
 	db database.IDatabase
+	roleRepository repository.IRoleRepo
 }
 
 // New instanciate a staff repository
 // Return a pointer of the staff repository
-func New(db database.IDatabase) *service {
+func New(db database.IDatabase, role repository.IRoleRepo) *service {
 	return &service{
 		db: db,
+		roleRepository: role,
 	}
 }
 
@@ -70,8 +73,6 @@ func (s *service) GetStaffByEmail(email string) (model.Staff, error) {
 // It return the staff pointer created and error
 func (s *service) InsertStaff(staff *model.Staff) error {
 
-	var role model.Role
-
 	// Check email
 	err := s.emailValidator(staff.Email)
 
@@ -81,11 +82,10 @@ func (s *service) InsertStaff(staff *model.Staff) error {
 
 	// Check role
 
-	row := s.db.GetDatabase().QueryRow("SELECT * FROM role WHERE name=? LIMIT 1", staff.Role.Name)
-	err = row.Scan(&role.Id, &role.Name)
+	role, err := s.roleRepository.GetRoleByName(staff.Role.Name)
 
-	if (err != nil) || (role.Name == "") {
-		return fmt.Errorf("Invalid role")
+	if err != nil {
+		return err
 	}
 
 	// Starting insert
@@ -116,6 +116,7 @@ func (s *service) InsertStaff(staff *model.Staff) error {
 
 // UpdateStaff update a staff member
 func (s *service) UpdateStaff(staff *model.Staff) (error) {
+	// TODO
 	return nil
 }
 
