@@ -20,7 +20,7 @@ CREATE TABLE `level` (
 );
 
 CREATE TABLE `staff` (
-  `id` integer PRIMARY KEY AUTO_INCREMENT,
+  `id` integer UNIQUE PRIMARY KEY AUTO_INCREMENT,
   `email` varchar(255),
   `password` varchar(255),
   `role` integer,

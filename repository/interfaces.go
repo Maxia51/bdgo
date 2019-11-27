@@ -8,5 +8,7 @@ import "github.com/maxia51/bdgo/model"
 // It returns a model.staff struct.
 // and any error encountered that caused the get fail.
 type IStaffRepo interface {
+	GetAll() (model.Staffs, error)
 	GetStaffByEmail(email string) (model.Staff, error)
+	InsertStaff(staff *model.Staff) (error)
 }

@@ -8,8 +8,8 @@ import (
 	"github.com/maxia51/bdgo/database"
 	"github.com/maxia51/bdgo/middleware"
 	staffRepository "github.com/maxia51/bdgo/repository/staff"
-	"github.com/maxia51/bdgo/routes/user"
 	"github.com/maxia51/bdgo/routes/login"
+	"github.com/maxia51/bdgo/routes/staff"
 	"github.com/maxia51/bdgo/security"
 )
 
@@ -35,20 +35,26 @@ func main() {
 
 	router := gin.Default()
 
-	api := router.Group("/api")
+	api := router.Group("/api/v1")
 	{
 
 		loginRouter := login.New(staffRepository, securityService)
 		loginRouter.Register(api)
 	}
 	{
-		adminAuth := api.Group("/v1")
-
-		adminAuth.Use(middleware.AuthRequired("ADMIN"))
+		// ADMIN Routes
+		adminRouter := api.Group("/staff")
 		{
-			userRouter := user.New(securityService)
-			userRouter.Register(adminAuth)
+			adminRouter.Use(middleware.AuthRequired("ADMIN"))
+			{
+				staffRouter := staff.New(staffRepository)
+				staffRouter.Register(adminRouter)
+			}
 		}
+	}
+	{
+		// MODERATOR Routes
+		//moderatorRouter := api.Group("/user")
 	}
 
 	router.Run(":3000")
