@@ -24,8 +24,6 @@ func AuthRequired(role ...interface{}) gin.HandlerFunc {
 			return
 		}
 
-		fmt.Println(claims["role"])
-
 		var hasRole bool;
 
 		for _, element := range role {
