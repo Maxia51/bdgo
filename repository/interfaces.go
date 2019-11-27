@@ -11,4 +11,5 @@ type IStaffRepo interface {
 	GetAll() (model.Staffs, error)
 	GetStaffByEmail(email string) (model.Staff, error)
 	InsertStaff(staff *model.Staff) (error)
+	UpdateStaff(staff *model.Staff) (error)
 }

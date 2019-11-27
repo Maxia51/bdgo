@@ -23,6 +23,7 @@ func New(s repository.IStaffRepo) *service {
 func (s *service) Register(r *gin.RouterGroup) {
 	r.GET("/", s.getAllStaffHandler)
 	r.POST("/", s.createStaffHandler)
+	r.PUT("/", s.updtadeStaffHandler)
 }
 
 func (s *service) getAllStaffHandler(c *gin.Context) {
@@ -64,4 +65,10 @@ func (s *service) createStaffHandler(c *gin.Context) {
 	}
 	
 	c.JSON(200, staff)
+}
+
+func (s *service) updtadeStaffHandler(c *gin.Context) {
+
+	
+
 }

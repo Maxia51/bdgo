@@ -114,6 +114,11 @@ func (s *service) InsertStaff(staff *model.Staff) error {
 	return nil
 }
 
+// UpdateStaff update a staff member
+func (s *service) UpdateStaff(staff *model.Staff) (error) {
+	return nil
+}
+
 // emailValidator check if email as correct format
 func (s *service) emailValidator(email string) (error) {
 	var rxEmail = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
